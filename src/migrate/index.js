@@ -379,7 +379,8 @@ export default class Migrator {
 
   _transaction(migration, direction, name) {
     return this.knex.transaction((trx) => {
-      return warnPromise(migration[direction](trx, Promise), name, () => {
+      const self = this; 
+      return warnPromise.bind(self)(migration[direction](trx, Promise), name, () => {
         trx.commit();
       });
     });
